@@ -10,6 +10,11 @@ Clone this repo:
 gh repo clone Cashtann/CMake-Template
 ```
 
+### To run this, u need to install microhttpd
+``` sudo/brew install microhttpd ```
+### and libpcap
+``` sudo/brew install pcapplusplus ```
+
 **First of all, you may need to make those bash scripts executable, so in the project directory paste in these commands:**
 ```
 chmod +x setupCMake.sh compile.sh run.sh
