@@ -17,9 +17,6 @@ set (CMAKE_LIBRARY_OUTPUT_DIRECTORY "${FullOutputDir}")
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY "${FullOutputDir}")
 
 
-# add_library(log SHARED "./src/log.cpp") 
-# adds dynamic lib (compiles files to dynamic lib -> ".dll" on windows; ".so" on linux), needs to be specified
-
 add_executable(RatFinder ${source_files})
 
 link_directories(/opt/homebrew/lib)
@@ -32,9 +29,14 @@ link_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/libs/libhttpserver/lib
     /opt/homebrew/lib)
 
+find_package(PcapPlusPlus REQUIRED)
 
-target_link_libraries(RatFinder /opt/homebrew/lib/libhttpserver.a /System/Volumes/Data/opt/homebrew/lib/libmicrohttpd.a)
 
-# links header files from ./inc directory
+target_link_libraries(RatFinder /opt/homebrew/lib/libhttpserver.a 
+    /System/Volumes/Data/opt/homebrew/lib/libmicrohttpd.a 
+    PcapPlusPlus::Pcap++)
+
+
+# includes files /inc
 target_include_directories(RatFinder PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 
