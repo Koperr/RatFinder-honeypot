@@ -16,11 +16,12 @@ sudo apt-get install libcap-dev
 sudo apt install tcpdump 
 ```
 
-# if sth isnt working with PcapPlusPlus, go to libs/PcapPlusPlus and type
+### if sth isnt working with PcapPlusPlus, go to libs/PcapPlusPlus and type
 ``` 
 cmake -S . -B build
 cd build
 make
+sudo cmake --install .
 ```
 
 
