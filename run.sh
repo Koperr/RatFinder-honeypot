@@ -4,7 +4,7 @@ cd ..
 
 OS=$(uname)
 
-echo "Running on: ["$OS"] OS"
+echo "Running on: "$OS" OS"
 
 if [ "$OS" = "Darwin" ]; then
     # macOS
@@ -18,5 +18,5 @@ else
 fi
 
 cd $EXEC_PATH
-./RatFinder
+sudo ./RatFinder
 cd ../..

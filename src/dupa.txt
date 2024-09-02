@@ -1,0 +1,57 @@
+#include <iostream>
+#include <map>
+#include <fstream>
+#include <thread>
+
+#include <PcapLiveDeviceList.h>
+#include <IPv4Layer.h>
+#include <Packet.h>
+#include <PcapFileDevice.h>
+//#include <PlatformSpecificUtils.h>
+
+
+void onPacketArrives(pcpp::RawPacket* packet, pcpp::PcapLiveDevice* dev, void* cookie)
+{
+    int* packetCount = static_cast<int*>(cookie);
+    (*packetCount)++;
+
+    pcpp::Packet parsedPacket(packet);
+
+    pcpp::IPv4Layer* ipv4layer = parsedPacket.getLayerOfType<pcpp::IPv4Layer>();
+    if(ipv4layer != nullptr)
+    {
+        std::cout << "Packet #" << *packetCount << " Source IP: " << ipv4layer->getSrcIPAddress().toString() << std::endl;
+        std::cout << "Packet #" << *packetCount << " Destination IP: " << ipv4layer->getDstIPAddress().toString() << std::endl;
+    }
+}
+
+int main(int argc, char* argv[])
+{
+
+    pcpp::PcapLiveDevice* dev = pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDeviceByIp("192.168.0.97");
+
+    if (dev == nullptr)
+    {
+        std::cerr << "Device not found!\n";
+        return 1;
+    }
+
+
+    if(!dev->open())
+    {
+        std::cerr << "Cannot open the device!\n";
+        return 1;
+    }
+
+    int packetCount = 0;
+    
+    dev->startCapture(onPacketArrives, &packetCount);
+
+    std::cout << "Sranie w banie, kliknij ENTER ab zakonczyc\n";
+    std::cin.get();
+
+    dev->stopCapture();
+    dev->close();
+
+    return 0;
+}
