@@ -4,6 +4,8 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include <cstring>
+#include <arpa/inet.h>
+// nmap -p 1-65535 192.168.0.97
 
 int main()
 {
@@ -31,15 +33,26 @@ int main()
     sockaddr_in clientAddr;
     socklen_t clientLen = sizeof(clientAddr);
     int clientSocket = accept(serverSocket, (sockaddr*)&clientAddr, &clientLen);
-    if (clientSocket < 0) {
-        std::cerr << "Error on accept\n";
-        close(serverSocket);
-        return 1;
+    while(true)
+    {
+        if (clientSocket < 0) {
+            std::cout << "1\n";
+            std::cerr << "Error on accept\n";
+            close(serverSocket);
+            return 1;
+        }
+
+        char clientIP[INET_ADDRSTRLEN];
+        inet_ntop(AF_INET, &(clientAddr.sin_addr), clientIP, INET_ADDRSTRLEN);
+        std::cout << "Client connected! IP: " << clientIP;
+
+        //std::string command = "curl http://ip-api.com/json/" + (std::string)clientIP;
+        //std::cout << (system(command.c_str()));
+        //std::cout << "gdfgdfgf\n";
     }
 
-    std::cout << "Client connected!\n";
-
     // Zamknięcie socketów
+    //close(clientSocket);
     close(clientSocket);
     close(serverSocket);
 }
