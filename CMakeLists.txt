@@ -30,8 +30,7 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin") # macOS
         /opt/homebrew/lib)
     target_link_libraries(RatFinder 
         /opt/homebrew/lib/libhttpserver.a 
-        /System/Volumes/Data/opt/homebrew/lib/libmicrohttpd.a 
-        PcapPlusPlus::Pcap++)
+        /System/Volumes/Data/opt/homebrew/lib/libmicrohttpd.a)
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux") # Linux
     message(STATUS "Configuring for Linux")
     target_include_directories(RatFinder PUBLIC 
@@ -42,17 +41,10 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux") # Linux
         /usr/local/lib)
     target_link_libraries(RatFinder 
         /usr/lib/x86_64-linux-gnu/libmicrohttpd.a
-        /usr/local/lib/libhttpserver.a
-        PcapPlusPlus::Pcap++)
+        /usr/local/lib/libhttpserver.a)
 else()
     message(FATAL_ERROR "Unsupported system: ${CMAKE_SYSTEM_NAME}")
 endif()
-
-find_package(PcapPlusPlus REQUIRED)
-
-
-target_link_libraries(RatFinder
-    PcapPlusPlus::Pcap++)
 
 
 # includes files /inc
